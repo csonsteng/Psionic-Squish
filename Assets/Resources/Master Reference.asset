@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd7c59e9e50b6184a806fe69c0f1ce25, type: 3}
+  m_Name: Master Reference
+  m_EditorClassIdentifier: 
+  levelTypes: {fileID: 11400000, guid: f2a10550d18745541908fd5dc175837e, type: 2}
+  levelEnvironment: {fileID: 11400000, guid: 5ba5bade45ade564a853737f2805923b, type: 2}
+  characters: {fileID: 11400000, guid: 03eb8b01628ac3646abf692dc920557e, type: 2}
+  enemies: {fileID: 11400000, guid: ba952d3f42ff0654ab006536cb012e7a, type: 2}
+  structures: {fileID: 11400000, guid: bb149df6738c59e49b437ca97dc0fa90, type: 2}
+  actions: {fileID: 11400000, guid: 73218334501bd1c42b86aca19f72f2f4, type: 2}
+  items: {fileID: 11400000, guid: 6eab415b3fb86b6478054b8233e7f901, type: 2}

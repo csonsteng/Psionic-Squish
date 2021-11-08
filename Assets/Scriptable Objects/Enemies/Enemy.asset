@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21b13483abc38c46b75730cfc82d887, type: 3}
+  m_Name: Enemy
+  m_EditorClassIdentifier: 
+  characterName: Enemy
+  actionPoints: 6
+  fieldOfView: 90
+  viewDistance: 7
+  prefab:
+    m_AssetGUID: 97e4f57c622758443b1ba7eb1b097df3
+    m_SubObjectName: 
+    m_SubObjectType: 
+  hoverMaterial: {fileID: 2100000, guid: 6807129ece811524b939516a8ebc664c, type: 2}
+  step: {fileID: 11400000, guid: 10edf64ef17a7f14e952676e414e1fa7, type: 2}
+  characterClass: {fileID: 11400000, guid: 3778063b6101e5e43b7cad6f549eb497, type: 2}
+  uniqueID: Enemy

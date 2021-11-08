@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ab6c907fbd933a4681073942c698889, type: 3}
+  m_Name: Fighter
+  m_EditorClassIdentifier: 
+  displayName: Fighter
+  startingActionPoints: 7
+  startingActions:
+  - {fileID: 11400000, guid: 2668703a1ec6ebe4e8cd3d6344f4ce14, type: 2}
+  - {fileID: 11400000, guid: d8b23b2df64235748af97845245b16da, type: 2}
+  - {fileID: 11400000, guid: ac8d2c147fa385146834d0c163a0d9e8, type: 2}

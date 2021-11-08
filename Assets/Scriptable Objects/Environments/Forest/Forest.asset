@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87361132d66576f4aa95a4af9b0b8fb5, type: 3}
+  m_Name: Forest
+  m_EditorClassIdentifier: 
+  uniqueID: Forest
+  baseRowCount: 30
+  baseColumnCount: 30
+  obstacleDensity: 0.6
+  minBaseDistanceFromStart: 18
+  maxObjectiveDistance: 8
+  minEnemyDistance: 6
+  enemyCount: 5
+  dummyObjectiveCount: 5
+  floatingContainerChance: 0.5
+  tileHoverMaterial: {fileID: 2100000, guid: 6807129ece811524b939516a8ebc664c, type: 2}
+  obstacles:
+  - m_AssetGUID: d5b49990c6e319c4d802faac1caf7b14
+    m_SubObjectName: 
+    m_SubObjectType: 
+  groundTiles:
+  - m_AssetGUID: 635b898748dae134eab4319e5bfae6b8
+    m_SubObjectName: 
+    m_SubObjectType: 
+  containers:
+  - m_AssetGUID: a10a03561abf19f4db6236612e5b92a7
+    m_SubObjectName: 
+    m_SubObjectType: 
+  potentialEnemies:
+  - {fileID: 11400000, guid: 5377b34f583b7464a898b1b9d9bb8dba, type: 2}
+  structures:
+  - {fileID: 11400000, guid: 4650e0b9cdf0b3d458806be39468165d, type: 2}
+  - {fileID: 11400000, guid: 4650e0b9cdf0b3d458806be39468165d, type: 2}
+  - {fileID: 11400000, guid: 4650e0b9cdf0b3d458806be39468165d, type: 2}
+  requiredItems:
+  - {fileID: 11400000, guid: 3b0c33809eb25d748abfe0dc7b5b762c, type: 2}
+  objectives:
+  - {fileID: 11400000, guid: aa672b2ed2355034bac4f5cc2c26ed05, type: 2}

@@ -1,0 +1,222 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcd8dad3af53af64e9f05d888dca6668, type: 3}
+  m_Name: Tent
+  m_EditorClassIdentifier: 
+  uniqueID: Tent
+  minRangeFromBase: 2
+  maxRangeFromBase: 8
+  minDistanceFromEdge: 4
+  minDistanceFromOtherStructures: 3
+  prefab:
+    m_AssetGUID: dbd25d84310ba04498f7a7930bcc6f42
+    m_SubObjectName: 
+    m_SubObjectType: 
+  prefabOffset: {x: 1.5, y: 1, z: 1.5}
+  enemyConfiguration:
+    minCount: 2
+    maxCount: 2
+    maxRange: 8
+    requiredEnemies: []
+    enemyPool:
+    - {fileID: 11400000, guid: 5377b34f583b7464a898b1b9d9bb8dba, type: 2}
+    possibleLocations:
+    - spawnChance: 0.2
+      location:
+        excludeFromStructure: 0
+        blockedOnLeft: 1
+        blockedOnTop: 0
+        blockedOnRight: 0
+        blockedOnBottom: 1
+        row: 2
+        column: 1
+        isInterior: 1
+        enemyLocation: 1
+        objectiveLocation: 0
+      possibleStatuses: 0400000002000000
+    - spawnChance: 0.2
+      location:
+        excludeFromStructure: 0
+        blockedOnLeft: 0
+        blockedOnTop: 0
+        blockedOnRight: 1
+        blockedOnBottom: 1
+        row: 2
+        column: 2
+        isInterior: 1
+        enemyLocation: 1
+        objectiveLocation: 0
+      possibleStatuses: 0400000002000000
+    possibleStatuses: 040000000400000004000000
+  specialEnemies: []
+  spaces:
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 0
+    column: 0
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 1
+    column: 0
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 1
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 0
+    column: 1
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 1
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 1
+    column: 1
+    isInterior: 1
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 2
+    column: 0
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 1
+  - excludeFromStructure: 0
+    blockedOnLeft: 1
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 1
+    row: 2
+    column: 1
+    isInterior: 1
+    enemyLocation: 1
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 0
+    column: 2
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 1
+    blockedOnBottom: 0
+    row: 1
+    column: 2
+    isInterior: 1
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 1
+    blockedOnBottom: 1
+    row: 2
+    column: 2
+    isInterior: 1
+    enemyLocation: 1
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 3
+    column: 0
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 3
+    column: 1
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 3
+    column: 2
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 0
+    column: 3
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 1
+    column: 3
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 1
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 2
+    column: 3
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 1
+  - excludeFromStructure: 0
+    blockedOnLeft: 0
+    blockedOnTop: 0
+    blockedOnRight: 0
+    blockedOnBottom: 0
+    row: 3
+    column: 3
+    isInterior: 0
+    enemyLocation: 0
+    objectiveLocation: 0
+  size: 4

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff56d4cb3dd76444bed9cbd3decdc12, type: 3}
+  m_Name: Blow Dart
+  m_EditorClassIdentifier: 
+  displayName: Blow Dart
+  description: Puts the enemy to sleep
+  uniqueID: Blow Dart
+  type: 2
+  rarity: 0
+  sprite:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  passiveTrigger: 0
+  pointsCost: 1
+  cooldown: 1
+  actionCriteria:
+    targets: 1
+    range: 10
+    requireLineOfSight: 1
+    targetsLiving: 1
+    targetsDead: 0
