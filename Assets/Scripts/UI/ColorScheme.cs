@@ -6,14 +6,18 @@ using UnityEngine;
 [Serializable]
 public class ColorScheme
 {
-    public Color PrimaryColor { get; }
-    public Color Accent1 { get; }
-    public Color Accent2 { get; }
+    public Color PrimaryColor => primary;
+    public Color Accent1 => accent1;
+    public Color Accent2 => accent2;
+
+    [SerializeField] private Color primary;
+    [SerializeField] private Color accent1;
+    [SerializeField] private Color accent2;
 
     public ColorScheme(Color color) {
-        PrimaryColor = color;
-        Accent1 = ColorUtilities.FindMonochromatic(color);
-        Accent2 = ColorUtilities.FindMonochromatic(color, false);
+        primary = color;
+        accent1 = ColorUtilities.FindMonochromatic(color);
+        accent2 = ColorUtilities.FindMonochromatic(color, false);
     }
 
 }

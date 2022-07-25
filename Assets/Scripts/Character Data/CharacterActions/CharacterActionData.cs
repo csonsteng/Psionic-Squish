@@ -33,6 +33,11 @@ public abstract class CharacterActionData: ReferenceData {
 	}
 
     public virtual bool IsAvailable(CharacterAction action) {
+        if(action.Owner == null)
+		{
+            Debug.LogError($"No owner on {uniqueID}");
+            return false;
+		}
         if (action.Owner.ActionPoints() >= pointsCost && !action.OnCooldown()) {
             return true;
         }

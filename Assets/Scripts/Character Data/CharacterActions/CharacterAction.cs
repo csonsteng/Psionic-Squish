@@ -3,12 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
+using UnityEditor.AnimatedValues;
 
 [System.Serializable]
 public class CharacterAction: ReferenceInstance<CharacterActionData> {
 
 	protected override CharacterActionData LoadReference() => ResourceLoader.GetAction(referenceID);
-	[field: SerializeReference] public AbstractCharacter Owner { get; }
+	public AbstractCharacter Owner
+	{
+		get
+		{
+			return owner;
+		}
+		private set
+		{
+			owner = value;
+		}
+	}
+	[SerializeReference] private AbstractCharacter owner;
 	[field: SerializeField] public int PointsCost {get; private set;}
 	[SerializeField] private int turnsSinceUse = 999;
 
