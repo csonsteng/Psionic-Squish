@@ -1,22 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemInstance 
+[Serializable]
+public class ItemInstance : ReferenceInstance<ItemData>
 {
-	private ItemData data;
-	public ItemData Data => data;
 	public bool Consumable => data.consumable;
 	public int BaseCost => data.baseCost;
-	public ItemInstance(ItemData itemData) {
-		data = itemData;
+
+	public ItemInstance(ItemData data) : base(data)
+	{
+
 	}
-	public ItemInstance(SerializableItem item) {
-		data = ResourceLoader.GetItem(item.itemData);
-	}
-	public SerializableItem Serialize() {
-		return new SerializableItem(this);
-	}
+
 	public bool GrantsAction() {
 		return data.action != null;
 	}
@@ -27,4 +24,6 @@ public class ItemInstance
 
 		return data.action;
 	}
+
+	protected override ItemData LoadReference() => ResourceLoader.GetItem(referenceID);
 }

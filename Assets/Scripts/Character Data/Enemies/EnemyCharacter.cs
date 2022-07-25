@@ -20,15 +20,12 @@ public class EnemyCharacter : AbstractCharacter {
 			}
         }
     }
-    private EnemyStatus status;
-    [SerializeReference]
-    public MapSpace target;
+    [SerializeField] private EnemyStatus status;
+    [SerializeReference] public MapSpace target;
     public Direction targetDirection;
 
-    [SerializeReference]
-    public List<MapSpace> patrolPath = new List<MapSpace>();
-    [SerializeReference]
-    public List<MapSpace> tileIndicators = new List<MapSpace>();
+    [SerializeReference] public List<MapSpace> patrolPath = new List<MapSpace>();
+    [SerializeReference] public List<MapSpace> tileIndicators = new List<MapSpace>();
     public bool statusShowing = false;
 
     private bool OnDefense => status == EnemyStatus.Defend || status == EnemyStatus.FallingBack;
@@ -39,16 +36,7 @@ public class EnemyCharacter : AbstractCharacter {
         direction = new Direction().Random();
     }
 
-    public EnemyCharacter(SerializableEnemy enemy) : base(ResourceLoader.GetEnemy(enemy.enemyData)){
-        direction = enemy.direction;
-        targetDirection = enemy.targetDirection;
-        status = enemy.status;
-        statusShowing = enemy.statusShowing;
-	}
-
-    public SerializableEnemy Serialize() {
-        return new SerializableEnemy(this);
-	}
+    protected override AbstractCharacterData LoadReference() => ResourceLoader.GetEnemy(referenceID);
     public override bool CanBeAttacked() => true;
     public void ClearTileIndicators() {
         foreach(var space in tileIndicators) {
@@ -126,16 +114,14 @@ public class EnemyCharacter : AbstractCharacter {
     }
 
     private Vector3 GetGroundPosition() {
-        var mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        var mainCamera = UnityEngine.GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         Ray worldRay = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         groundPlane.Raycast(worldRay, out float distanceToGround);
         return worldRay.GetPoint(distanceToGround);
     }
 
-    public override int GetLayer() {
-        return LayerMask.NameToLayer("Default");
-	}
+    public override int GetLayer() => LayerMask.NameToLayer("Default");
 
     public override async UniTask NewTurn() {
         await base.NewTurn();

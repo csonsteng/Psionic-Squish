@@ -4,6 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using Structures;
 
 public class LevelObjectSpawner : MonoBehaviour {
 
@@ -73,25 +74,41 @@ public class LevelObjectSpawner : MonoBehaviour {
 		Controller.AddClickable(space, tileObject);
 	}
 
+	public async UniTask<GameObject> SpawnObstacleFromSpace(MapSpace space)
+	{
+		var obstacle = space.obstacle;
+		var gameObject = new AssetReferenceGameObject(obstacle.GUID);
+
+		return await SpawnObstacle(gameObject, space, obstacle.rotation);
+	}
+
 	public async UniTask<GameObject> SpawnObstacleInSpace(AssetReferenceGameObject gameObject, MapSpace space, float rotation) {
 
-		level.AddObstacle(space, gameObject, rotation);
-		space.hasObstacle = true;
-		var spawnedObject =  await SpawnObjectInSpace(gameObject, space, false);
+		space.AddObstacle(gameObject, rotation);
+		return await SpawnObstacle(gameObject, space, rotation);
+	}
+	private async UniTask<GameObject> SpawnObstacle(AssetReferenceGameObject gameObject, MapSpace space, float rotation)
+	{
+		var spawnedObject = await SpawnObjectInSpace(gameObject, space, false);
 		spawnedObject.transform.Rotate(new Vector3(0f, rotation, 0f));
 		return spawnedObject;
+
 	}
+
 
 	public async UniTask SpawnContainer(LevelInteractableContainer container, AssetReferenceGameObject assetReference) {
 		Controller.AddContainer(container);
 		containers.Add(container);
-		//level.AddObjective(assetReference, space, rotation);
 		var returnObject = await SpawnObjectInSpace(assetReference, container.position, false);
 		returnObject.transform.Rotate(new Vector3(0f, -container.rotation, 0f));
 		returnObject.GetComponentInChildren<BillboardCanvas>().UpdateRotation(new Vector3(0f, container.rotation, 0f));
 		container.SetGameObject(returnObject);
 
 	}
+
+	public async UniTask<GameObject> SpawnStructureObject(LevelStructure structure)
+		=> await SpawnStructureObject(structure.Prefab, structure.rootSpace, structure.PrefabOffset, structure.rotation);
+	
 
 
 	public async UniTask<GameObject> SpawnStructureObject(AssetReferenceGameObject gameObject, MapSpace space, Vector3 offset, float rotation) {
@@ -157,7 +174,7 @@ public class LevelObjectSpawner : MonoBehaviour {
 	}
 
 	public async void StartGame() {
-		FindObjectOfType<CameraController>().AlignCamera(party.members[0].GetGameObject().transform.position);
+		FindObjectOfType<CameraController>().AlignCamera(party.members[0].GameObject.transform.position);
 		//wait for the end of the fixedupdate frame to ensure colliders are in place before calcing vision
 		await UniTask.WaitForFixedUpdate();
 		await UniTask.WaitForEndOfFrame();

@@ -4,10 +4,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 
-public class AbstractCharacterData : ReferencableObject {
-    public override string GetUniqueID() {
-        return uniqueID;
-    }
+public class AbstractCharacterData : ReferenceData {
     public string characterName;
     public int actionPoints;
     public float fieldOfView;
@@ -18,6 +15,4 @@ public class AbstractCharacterData : ReferencableObject {
     public SoundEffect step;
 
     public CharacterClass characterClass;
-
-    public string uniqueID;
 }

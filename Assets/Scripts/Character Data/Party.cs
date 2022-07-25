@@ -1,18 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Party
 {
-    public List<PlayableCharacter> members = new List<PlayableCharacter>();
+    [SerializeReference] public List<PlayableCharacter> members = new List<PlayableCharacter>();
 	public Inventory inventory;
 
     public void Clear() {
-		foreach (var member in members) {
-			if (member.GetGameObject() != null) {
-				GameObject.Destroy(member.GetGameObject());
-			}
-		}
+		foreach (var member in members) 
+			if (member.GameObject != null) 
+				member.GameObject.Destroy();
+
 		members.Clear();
 	}
 
@@ -46,12 +47,4 @@ public class Party
 		inventory = new Inventory();
 	}
 
-	public Party(SerializableParty party, SerializableLevel level) {
-		foreach(var member in party.members) {
-			var character = new PlayableCharacter(member);
-			character.SetPosition(level.GetSpace(member.position));
-			members.Add(character);
-		}
-		inventory = new Inventory(party.inventory);
-	}
 }

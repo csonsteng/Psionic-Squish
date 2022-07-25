@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName ="References/LevelType")]
-public class LevelTypeReferences : GenericScriptableObjectReference<LevelType> { }
+public class LevelTypeReferences : ReferenceObjectList<LevelTypeData> { }
 
 
 

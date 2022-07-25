@@ -23,7 +23,7 @@ public class VisionProfile
 	}
 
 	public Threshold GetThreshold(MapSpace mapSpace) {
-		return GetThreshold(mapSpace.GetTileObject());
+		return GetThreshold(mapSpace.TileObject);
 	}
 
 	private Threshold CalculateThreshold(int hits) {

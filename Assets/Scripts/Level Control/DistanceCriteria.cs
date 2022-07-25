@@ -82,7 +82,7 @@ public class DistanceCriteria
         for(var i=0; i<=distance; i++) {
             for(var j=0; j<=distance; j++) {
                 var space = map.GetSpaceFromCoordinates(otherSpace.row + i, otherSpace.column + i);
-                if(space != null && space.hasStructure) {
+                if(space != null && space.HasStructure) {
                     return false;
 				}
                 

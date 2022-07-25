@@ -23,7 +23,7 @@ public static class Pathfinding
         nodeMap.Clear();
         nodeMap = new List<Node>();
         foreach(var space in levelMap.spaces) {
-			if (space.hasObstacle) {
+			if (space.HasObstacle) {
                 continue;
 			}
             Node newNode = new Node {
@@ -48,7 +48,7 @@ public static class Pathfinding
             throw new System.Exception("Cannot pathfind between null spaces");
         }
         List<MapSpace> path = new List<MapSpace>();
-        if(start.hasObstacle || goal.hasObstacle) {
+        if(start.HasObstacle || goal.HasObstacle) {
             return path;
 		}
         if (nodeMap == null) {

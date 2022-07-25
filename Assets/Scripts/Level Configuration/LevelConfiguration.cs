@@ -4,13 +4,26 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 [Serializable]
-public class LevelConfiguration
+public class LevelConfiguration: ISerializationCallbackReceiver
 {
     public int difficulty;
     public float defendLevel;
 
-    public LevelType type;
-    public LevelEnvironment environment;
+
+    [NonSerialized] public LevelTypeData type;
+    [NonSerialized] public LevelEnvironmentData environment;
+
+    private string typeID;
+    private string environmentID;
+
+    public LevelConfiguration(LevelTypeData type, LevelEnvironmentData environment, int difficulty, float defendLevel)
+	{
+        this.type = type;
+        this.environment = environment;
+        this.difficulty = difficulty;
+        this.defendLevel = defendLevel;
+	}
+    
 
     public float ObstacleDensity => environment.obstacleDensity;
     public float EnemyCount => environment.enemyCount;
@@ -30,14 +43,21 @@ public class LevelConfiguration
 
     public DistanceCriteria[] GetBaseCriteria(MapSpace startingSpace) => environment.GetBaseCriteria(startingSpace);
 
-	public SerializableConfiguration Serialize() {
-        return new SerializableConfiguration(this);
+	public void OnBeforeSerialize()
+    { 
+        if(type != null)
+            typeID = type.uniqueID;
+        if(environment != null)
+            environmentID = environment.uniqueID;
 	}
 
-    public LevelConfiguration(SerializableConfiguration serialized) {
-        type = ResourceLoader.GetLevelType(serialized.typeReference);
-        environment = ResourceLoader.GetEnvironment(serialized.environmentReference);
-        difficulty = serialized.difficulty;
-        defendLevel = serialized.defendLevel;
+	public void OnAfterDeserialize()
+	{
+        if (environmentID.IsNotNullOrEmpty())
+            environment = ResourceLoader.GetEnvironment(environmentID);
+        if (typeID.IsNotNullOrEmpty())
+            type = ResourceLoader.GetLevelType(typeID);
+
+
 	}
 }

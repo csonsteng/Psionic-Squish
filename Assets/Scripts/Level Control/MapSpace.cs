@@ -1,28 +1,39 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Structures;
+using UnityEngine.AddressableAssets;
 
 [System.Serializable]
-public class MapSpace : ITargetable
+public partial class MapSpace : ITargetable
 {
-
-    public delegate void CallbackFunction();
-    public int row;
-    public int column;
+    public readonly int row;
+    public readonly int column;
 
     public string tileObjectGUID;
 
-    public bool BlockedOnLeft => hasStructure && structure.blockedOnLeft;
-    public bool BlockedOnRight => hasStructure && structure.blockedOnRight;
-    public bool BlockedOnTop => hasStructure && structure.blockedOnTop;
-    public bool BlockedOnBottom => hasStructure && structure.blockedOnBottom;
-    public bool hasStructure = false;
-    public bool hasObstacle=false;
+    public bool BlockedOnLeft => HasStructure && Structure.blockedOnLeft;
+    public bool BlockedOnRight => HasStructure && Structure.blockedOnRight;
+    public bool BlockedOnTop => HasStructure && Structure.blockedOnTop;
+    public bool BlockedOnBottom => HasStructure && Structure.blockedOnBottom;
+    public bool HasStructure => Structure != null;
+
+    public bool HasObstacle => obstacle != null;
     public bool hasContainer = false;
     public bool possibleEnemyLocation = false;
     public bool possibleObjectiveLocation = false;
+
+    [SerializeField] public Obstacle obstacle = null;
+
+    public void AddObstacle(AssetReferenceGameObject gameObject, float rotation)
+    {
+        if (gameObject == null)
+            return;
+        obstacle = new Obstacle(gameObject, rotation);
+
+    }
+
 
     public bool Occupied {
         get {
@@ -46,26 +57,37 @@ public class MapSpace : ITargetable
 		}
 	}
 
-    private bool occupied = false;
-    private bool passable = true;
+    [SerializeField] private bool occupied = false;
+    [SerializeField] private bool passable = true;
     public bool visible = true;
-    private GameObject tileObject;
+    [field: NonSerialized] public GameObject TileObject { get; private set; }
     public UnityEvent tileHovered;
-    public CallbackFunction tileClicked;
-    [SerializeField]
-    public StructureSpace structure;
-    private StructureSceneObject structureObject;
+    public Action tileClicked;
+
+    public StructureSpace Structure
+    {
+        get
+        {
+            return _structure;
+        }
+        private set
+        {
+            _structure = value;
+        }
+    }
+    [SerializeField] private StructureSpace _structure;
+    [NonSerialized]private StructureSceneObject structureObject;
     private LevelInteractableContainer container;
-    public bool InteriorSpace => hasStructure && structure.isInterior;
+    public bool InteriorSpace => HasStructure && Structure.isInterior;
 
     public Material hoverMaterial;
     private Material originalMaterial;
-    public readonly LevelMap map;
-    private Dictionary<GameObject, int> occupantsAndLayers = new Dictionary<GameObject, int>();
-    private bool spotted = false;
-    private Threshold threshold;
+    [SerializeReference] public readonly LevelMap map;
+    private readonly Dictionary<GameObject, int> occupantsAndLayers = new Dictionary<GameObject, int>();
+    [SerializeField] private bool spotted = false;
+    [field: SerializeField] public Threshold Threshold { get; private set; }
 
-    public TileIndicator Indicator => tileObject.GetComponentInChildren<TileIndicator>();
+    public TileIndicator Indicator => TileObject.GetComponentInChildren<TileIndicator>();
 
     public MapSpace(int row, int column, LevelMap map) {
         this.row = row;
@@ -73,11 +95,10 @@ public class MapSpace : ITargetable
         this.map = map;
         map.ReportOccupancyChange(this);
     }
-
+    /*
     public MapSpace(SerializableMapSpace serializedSpace, LevelMap map) {
         row = serializedSpace.row;
         column = serializedSpace.column;
-        hasStructure = serializedSpace.hasStructure;
         hasObstacle = serializedSpace.hasObstacle;
         possibleEnemyLocation = serializedSpace.possibleEnemyLocation;
         possibleObjectiveLocation = serializedSpace.possibleObjectiveLocation;
@@ -97,7 +118,6 @@ public class MapSpace : ITargetable
         var serialized = new SerializableMapSpace() {
             row = row,
             column = column,
-            hasStructure = hasStructure,
             hasObstacle = hasObstacle,
             possibleEnemyLocation = possibleEnemyLocation,
             possibleObjectiveLocation = possibleObjectiveLocation,
@@ -109,8 +129,8 @@ public class MapSpace : ITargetable
             spotted = spotted
         };
         return serialized;
-	}
-
+	}*/
+    /*
     public SerializeMapReference Reference() {
         var serialized = new SerializeMapReference() {
             row = row,
@@ -118,10 +138,9 @@ public class MapSpace : ITargetable
         };
         return serialized;
 	}
-
+    */
     public int CurrentHitCount => Indicator.GetCurrentHitCount();
 
-    public Threshold Threshold => threshold;
 
     public Vector2 SubtractFrom(MapSpace other) {
         int dRow = row - other.row;
@@ -130,8 +149,7 @@ public class MapSpace : ITargetable
 	}
 
     public void PlaceStructure(StructureSpace space, StructureSceneObject structureObject) {
-        hasStructure = true;
-        structure = space;
+        Structure = space;
         this.structureObject = structureObject;
         possibleEnemyLocation = space.enemyLocation;
         possibleObjectiveLocation = space.objectiveLocation;
@@ -142,50 +160,34 @@ public class MapSpace : ITargetable
         this.container = container;
 	}
 
-	public GameObject ClickableObject() {
-        return tileObject;
-	}
 
-    public StructureSpace GetStructureSpace() {
-        return structure;
-	}
+	GameObject ITargetable.ClickableObject() => TileObject;
+	
 
-	public void HandleClick() {
-        tileClicked?.Invoke();
+	void ITargetable.HandleClick() => tileClicked?.Invoke();
 
-	}
-    public void SetTileObject(GameObject gameobject) {
-        tileObject = gameobject;
-	}
-    public GameObject GetTileObject() {
-        return tileObject;
-	}
-
+	
+    public void SetTileObject(GameObject gameobject) => TileObject = gameobject;
+	
     public bool ClaimPositionImpassable(GameObject gameObject, int layer) {
-        if(gameObject == null) {
+        if(gameObject == null || !Passable) {
             return false;
 		}
-        if (!Passable) {
-            return false;
-        }
         occupantsAndLayers.Add(gameObject, layer); 
         if (spotted) {
-            SetLayerRecursive(gameObject, layer);
+            gameObject.SetLayerRecursive(layer);
         }
         Passable = false;
         return true;
     }
 
     public bool ClaimPositionPassable(GameObject gameObject, int layer) {
-        if (gameObject == null) {
+        if (gameObject == null || !Passable) {
             return false;
         }
-        if (!Passable) {
-            return false;
-		}
         occupantsAndLayers.Add(gameObject, layer);
 		if (spotted) {
-            SetLayerRecursive(gameObject, layer);
+            gameObject.SetLayerRecursive(layer);
         }
         Occupied = true;
         return true;
@@ -204,9 +206,9 @@ public class MapSpace : ITargetable
     public void ShowTileAndOccupants() {
         spotted = true;
         foreach(KeyValuePair<GameObject, int> pair in occupantsAndLayers) {
-            SetLayerRecursive(pair.Key, pair.Value);
+            pair.Key.SetLayerRecursive(pair.Value);
 		}
-        SetLayerRecursive(tileObject,"Tile");
+        TileObject.SetLayerRecursive("Tile");
 		if (InteriorSpace) {
             structureObject.ShowTransparent();
 		}
@@ -223,7 +225,7 @@ public class MapSpace : ITargetable
 
         foreach (KeyValuePair<GameObject, int> pair in occupantsAndLayers) {
             string layerName = LayerMask.LayerToName(pair.Value);
-            string destinationLayer = "";
+            string destinationLayer;
 			switch (layerName) {
                 case "Tile":
                     destinationLayer = "CulledTiles";
@@ -235,25 +237,15 @@ public class MapSpace : ITargetable
                     destinationLayer = "Culled";
                     break;
 			}
-
-            SetLayerRecursive(pair.Key,destinationLayer);
+            pair.Key.SetLayerRecursive(destinationLayer);
         }
-        SetLayerRecursive(tileObject,"CulledTiles");
+        TileObject.SetLayerRecursive("CulledTiles");
     }
 
-    private void SetLayerRecursive(GameObject gameObject, string layer) {
-        SetLayerRecursive(gameObject, LayerMask.NameToLayer(layer));
-	}
-
-    private void SetLayerRecursive(GameObject gameObject, int layer) {
-        gameObject.layer = layer;
-        foreach(Transform transform in gameObject.transform) {
-            SetLayerRecursive(transform.gameObject, layer);
-		}
-	}
 
     private bool IsActivePlayerLocation() {
-        return LevelController.Get().ActivePlayer.GetPosition() == this;
+        var activePlayer = LevelController.Get().ActivePlayer;
+        return activePlayer != null && activePlayer.GetPosition() == this;
 	}
 
     public void HandleHover() {
@@ -286,24 +278,24 @@ public class MapSpace : ITargetable
 	}
 
     public void SetThresholdIndicator(Threshold threshold, int hits) {
-        this.threshold = threshold;
+        this.Threshold = threshold;
 		switch (threshold) {
-            case Threshold.Complete:
-                Indicator.SetCompleteIndicator(hits);
+            case global::Threshold.Complete:
+				Indicator.SetCompleteIndicator(hits);
                 break;
-            case Threshold.Partial:
-                Indicator.SetPartialIndicator(hits);
+            case global::Threshold.Partial:
+				Indicator.SetPartialIndicator(hits);
                 break;
         }
 	}
 
     public void ClearVisionIndicator() {
         Indicator.ClearIndicators();
-        threshold = Threshold.Hidden;
+        Threshold = Threshold.Hidden;
     }
 
     private MeshRenderer Renderer() {
-        return tileObject.GetComponentInChildren<MeshRenderer>();
+        return TileObject.GetComponentInChildren<MeshRenderer>();
     }
 
 	public MapSpace GetPosition() {

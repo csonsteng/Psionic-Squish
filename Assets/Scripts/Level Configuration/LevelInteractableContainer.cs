@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class LevelInteractableContainer 
 {
-	public MapSpace position;
+	[SerializeReference]public MapSpace position;
 	public float rotation;
 	public string assetReference;
 	public bool Empty => contents.Count == 0 && pelletsInside == 0;
@@ -60,17 +61,6 @@ public class LevelInteractableContainer
 			contents.Add(item.Data);
 		}
 		pelletsInside = inventory.GetPelletCount();
-	}
-
-	public LevelInteractableContainer(SerializableContainer container) {
-		assetReference = container.assetReference;
-		rotation = container.rotation;
-		locked = container.locked;
-		interacted = container.interacted;
-		pelletsInside = container.pelletsInside;
-		foreach(var item in container.contents) {
-			contents.Add(ResourceLoader.GetAction(item));
-		}
 	}
 
 	public void SetPosition(MapSpace space) {

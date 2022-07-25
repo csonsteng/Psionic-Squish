@@ -3,23 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Cysharp.Threading.Tasks;
+using System;
 
-public abstract class AbstractCharacter : ITargetable {
-	public AbstractCharacterData Data { get; }
+[Serializable]
+public abstract class AbstractCharacter : ReferenceInstance<AbstractCharacterData>, ITargetable {
+
+	#region Serialized Fields
+	public Inventory inventory;
+
 	public bool isActive = false;
 	public bool isDead = false;
 	public ColorScheme colorScheme;
 
-	protected MapSpace position;
-	protected GameObject gameObject;
-	protected Direction direction;
+	[SerializeReference] protected MapSpace position;
+	[SerializeField] protected Direction direction;
 
+	[SerializeField] protected int actionPointsRemaining;
+	[SerializeField] protected int maxActionPoints;
+
+	#endregion
 
 	public UnityAction onClick;
-	public Inventory inventory;
-
-	protected int actionPointsRemaining;
-	protected int maxActionPoints;
+	protected GameObject gameObject;
 	protected LineOfSight lineOfSight;
 	protected VisionProfile visionProfile;
 	protected Material originalMaterial;
@@ -28,8 +33,8 @@ public abstract class AbstractCharacter : ITargetable {
 	protected List<TriggeredEvent> triggers = new List<TriggeredEvent>();
 	protected ActionPointsUI pointsController;
 
-	public AbstractCharacter(AbstractCharacterData data, ColorScheme scheme = null) {
-		Data = data;
+	public AbstractCharacter(AbstractCharacterData data, ColorScheme scheme = null): base(data)
+	{
 		maxActionPoints = Data.actionPoints;
 		inventory = new Inventory();
 		if (scheme == null) {
@@ -152,9 +157,9 @@ public abstract class AbstractCharacter : ITargetable {
 	}
 	public void SetPosition(MapSpace position) {
 		if (this.position != null) {
-			this.position.RelenquishPosition(GetGameObject());
+			this.position.RelenquishPosition(GameObject);
 		}
-		position.ClaimPositionImpassable(GetGameObject(), GetLayer());
+		position.ClaimPositionImpassable(GameObject, GetLayer());
 		this.position = position;
 	}
 	public int ActionPoints() => actionPointsRemaining;
@@ -172,9 +177,8 @@ public abstract class AbstractCharacter : ITargetable {
 	public void RefreshActionPoints() {
 		actionPointsRemaining = maxActionPoints;
 	}
-	public GameObject GetGameObject() {
-		return gameObject;
-	}
+	public GameObject GameObject => gameObject;
+	
 	public void SetGameObject(GameObject gameObject) {
 		this.gameObject = gameObject;
 		lineOfSight = gameObject.GetComponent<LineOfSight>();

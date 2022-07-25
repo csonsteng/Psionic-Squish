@@ -1,27 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace Structures {
-	public class LevelStructure {
-        [SerializeReference]
-        public LevelStructureData data;
+    [Serializable]
+	public class LevelStructure: ReferenceInstance<LevelStructureData> {
+
+        [SerializeReference] public MapSpace rootSpace;
+
+        protected override LevelStructureData LoadReference() => ResourceLoader.GetStructure(referenceID);
 
         public AssetReferenceGameObject Prefab => data.prefab;
         public Vector3 PrefabOffset => data.prefabOffset;
+        public float rotation;
         public int enemyCount;
         public int maxEnemyDistance;
         public EnemyConfiguration enemyConfiguration;
-        //public List<EnemyCharacterData> specialEnemies = new List<EnemyCharacterData>();
 
         [HideInInspector]
-        [SerializeField]
-        public List<StructureSpace> spaces = new List<StructureSpace>();
+        [SerializeReference] public List<StructureSpace> spaces = new List<StructureSpace>();
         public int size = 0;
-        public LevelStructure(LevelStructureData data) {
-            this.data = data;
+        public LevelStructure(LevelStructureData data, MapSpace mapSpace, float rotation): base(data) {
+            this.rotation = rotation;
             size = data.size;
+            rootSpace = mapSpace;
             foreach(var space in data.spaces) {
                 spaces.Add(space.Copy());
 			}
@@ -29,15 +33,6 @@ namespace Structures {
             enemyConfiguration.ReassignSpaces(spaces);
 		}
 
-
-        public DistanceCriteria[] GetCriteria(MapSpace basePoint) {
-            DistanceCriteria criteriaMin = new DistanceCriteria(basePoint, data.minRangeFromBase, DistanceCriteria.Comparison.GreaterThanOrEqual);
-            DistanceCriteria criteriaMax = new DistanceCriteria(basePoint, data.maxRangeFromBase, DistanceCriteria.Comparison.LessThanOrEqual);
-            DistanceCriteria fromEdge = new DistanceCriteria(data.minDistanceFromEdge, DistanceCriteria.CheckType.MapEdge);
-            DistanceCriteria fromOtherStructures = new DistanceCriteria(data.minDistanceFromOtherStructures, DistanceCriteria.CheckType.Structure);
-            DistanceCriteria[] criteria = { criteriaMin, criteriaMax, fromEdge, fromOtherStructures };
-            return criteria;
-        }
         public List<StructureSpace> GetRotatedSpaces(float angle) {
             while (angle >= 90) {
                 spaces = Rotate90();

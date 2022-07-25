@@ -5,11 +5,8 @@ using UnityEngine.AddressableAssets;
 using Structures;
 
 [CreateAssetMenu(menuName = "Level Configuration/Environment")]
-public class LevelEnvironment : ScriptableObject, IReferenced {
-	public string GetUniqueID() {
-		return uniqueID;
-	}
-	public string uniqueID;
+public class LevelEnvironmentData : ReferenceData
+{
 	public int baseRowCount=15;
 	public int baseColumnCount=15;
 
@@ -70,4 +67,10 @@ public class LevelEnvironment : ScriptableObject, IReferenced {
 			new DistanceCriteria(startSpace, minBaseDistanceFromStart, DistanceCriteria.Comparison.GreaterThanOrEqual) };
 		return baseCriteria;
 	}
+}
+
+public class LevelEnvironment : ReferenceInstance<LevelEnvironmentData>
+{
+	protected override LevelEnvironmentData LoadReference() => ResourceLoader.GetEnvironment(referenceID);
+	public LevelEnvironment(LevelEnvironmentData data) : base(data) { }
 }

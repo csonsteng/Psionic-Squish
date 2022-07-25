@@ -8,11 +8,7 @@ using UnityEditor;
 
 namespace Structures {
     [CreateAssetMenu]
-    public class LevelStructureData : ScriptableObject, IReferenced {
-        public string GetUniqueID() {
-            return uniqueID;
-        }
-        public string uniqueID;
+    public class LevelStructureData : ReferenceData {
         public int minRangeFromBase = 0;
         public int maxRangeFromBase = 10;
         public int minDistanceFromEdge = 3;

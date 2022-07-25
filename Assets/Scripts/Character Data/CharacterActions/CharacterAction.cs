@@ -5,9 +5,10 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 
 [System.Serializable]
-public class CharacterAction {
-	public CharacterActionData Data { get; }
-	public AbstractCharacter Owner { get; }
+public class CharacterAction: ReferenceInstance<CharacterActionData> {
+
+	protected override CharacterActionData LoadReference() => ResourceLoader.GetAction(referenceID);
+	[field: SerializeReference] public AbstractCharacter Owner { get; }
 	public string DisplayName => Data.displayName;
 	public string Description => Data.description;
 
@@ -16,51 +17,23 @@ public class CharacterAction {
 	public bool RequiresTargets => Data.RequiresTargets();
 	public bool IsItem => Data.IsItem;
 
-	public bool IsActive {get; set;}
-	public ITargetable Target {
-		get {
-			return target;
-		}
-		set {
-			target = value;
-		}
-	}
-	private ITargetable target;
-	private int turnsSinceUse = 999;
+	public bool IsActive { get; set; }
+	public ITargetable Target { get; set; }
+	[field: SerializeField] public int PointsCost {get; private set;}
+	[SerializeField] private int turnsSinceUse = 999;
 
-	public CharacterAction(CharacterActionData characterActionData, AbstractCharacter owner) {
-		Data = characterActionData;
-		currentPointsCost = Data.pointsCost;
+	public CharacterAction(CharacterActionData characterActionData, AbstractCharacter owner): base(characterActionData) 
+	{
+		PointsCost = Data.pointsCost;
 		Owner = owner;
 		AddPassiveTriggers();
 	}
 
-	public CharacterAction(CharacterActionData characterActionData) {
-		Data = characterActionData;
-		currentPointsCost = Data.pointsCost;
+	public CharacterAction(CharacterActionData characterActionData) : base(characterActionData)
+	{
+		PointsCost = Data.pointsCost;
 	}
 
-
-	public CharacterAction(SerializableAction action, AbstractCharacter owner) {
-		turnsSinceUse = action.turnsSinceUse;
-		Data = ResourceLoader.GetAction(action.actionData);
-		currentPointsCost = Data.pointsCost;
-		Owner = owner;
-		AddPassiveTriggers();
-	}
-	public CharacterAction(SerializableAction action) {
-		turnsSinceUse = action.turnsSinceUse;
-		Data = ResourceLoader.GetAction(action.actionData);
-		currentPointsCost = Data.pointsCost;
-	}
-
-	public SerializableAction Serialize() {
-		return new SerializableAction(Data.uniqueID, turnsSinceUse);
-	}
-
-	public int PointsCost => currentPointsCost;
-
-	private int currentPointsCost = 0;
 
 	public void SetPending() {
 		Owner.SetPendingAction(PointsCost);
@@ -114,7 +87,7 @@ public class CharacterAction {
 	}
 
 	public async void Preview() {
-		currentPointsCost = await Data.PreviewAction(this);
+		PointsCost = await Data.PreviewAction(this);
 		SetPending();
 	}
 

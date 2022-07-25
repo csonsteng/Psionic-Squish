@@ -172,23 +172,25 @@ public class LevelGenerator : MonoBehaviour
 	}
 
 	private async UniTask SpawnStructure(LevelStructureData structureData) {
-		var structure = new LevelStructure(structureData);
-		DistanceCriteria[] criteria = structure.GetCriteria(basePoint);
-		var structSpace = map.GetRandomOpenSpaceWithDistanceCriteria(criteria);
-		if (structSpace == null) {
+		DistanceCriteria[] criteria = structureData.GetCriteria(basePoint);
+		var structureSpace = map.GetRandomOpenSpaceWithDistanceCriteria(criteria);
+		if (structureSpace == null) {
 			return;
 		}
 
 		float rotation = GetRandomRotatation();
 
+		var structure = new LevelStructure(structureData, structureSpace,rotation);
 
-		var gameObject = await Spawner.SpawnStructureObject(structure.Prefab, structSpace, structure.PrefabOffset, rotation);
 
-		level.AddStructure(structure, structSpace, rotation);
+
+		var gameObject = await Spawner.SpawnStructureObject(structure.Prefab, structureSpace, structure.PrefabOffset, rotation);
+
+		level.AddStructure(structure);
 
 		var spaces = structure.GetRotatedSpaces(rotation);
 		foreach (var space in spaces) {
-			var levelSpace = map.GetSpaceFromCoordinates(structSpace.row + space.row, structSpace.column + space.column);
+			var levelSpace = map.GetSpaceFromCoordinates(structureSpace.row + space.row, structureSpace.column + space.column);
 			if (levelSpace == null) {
 				continue;
 			}
@@ -201,7 +203,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 			}
 		}
-		foreach (var enemy in structure.enemyConfiguration.GetEnemies(map, structSpace)) {
+		foreach (var enemy in structure.enemyConfiguration.GetEnemies(map, structureSpace)) {
 			if (enemy == null) {
 				continue;
 			}

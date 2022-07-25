@@ -12,10 +12,12 @@ public class SaveLoadUtility
 	private static BinaryFormatter Formatter => new BinaryFormatter();
 	public static void Save(SaveData saveData, string fileName) {
 		string path = Application.persistentDataPath + "/" + fileName + ".save";
+
+
 		var stream = new FileStream(path, FileMode.Create);
 
-
-		Formatter.Serialize(stream, saveData);
+		var json = JsonUtility.ToJson(saveData);
+		Formatter.Serialize(stream, json);
 		stream.Close();
 	}
 
@@ -27,9 +29,9 @@ public class SaveLoadUtility
 		}
 
 		FileStream stream = new FileStream(path, FileMode.Open);
-		var data = Formatter.Deserialize(stream) as SaveData;
+		var data = Formatter.Deserialize(stream) as string;
 		stream.Close();
-		return data;
+		return JsonUtility.FromJson<SaveData>(data);
 	}
 
 	public static void Delete(string fileName) {

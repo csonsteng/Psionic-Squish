@@ -1,42 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Inventory
 {
-	//private List<ItemInstance> items = new List<ItemInstance>();
-	private List<CharacterAction> actions = new List<CharacterAction>();
+	[SerializeField] private List<CharacterAction> actions = new List<CharacterAction>();
 	public int itemSlots = 3;
-	private int pelletCount=0;
+	[SerializeField] private int pelletCount=0;
 
 	public Inventory() { }
-	public Inventory(SerializableInventory inventory) {
-		pelletCount = inventory.pelletCount;
-		foreach (var item in inventory.actions) {
-			actions.Add(new CharacterAction(item));
-		}
-	}
-	public Inventory(SerializableInventory inventory, AbstractCharacter owner) {
-		pelletCount = inventory.pelletCount;
-		itemSlots = inventory.itemSlots;
-		foreach(var item in inventory.actions) {
-			actions.Add(new CharacterAction(item, owner));
-		}
-	}
-
-	public SerializableInventory Serialize() {
-		return new SerializableInventory(this);
-	}
-
-	//public void GiveItem(ItemInstance item) {
-	//	items.Add(item);
-	//}
-
-	//public IEnumerable<ItemInstance> GetItems() {
-	//	foreach (var item in items) {
-	//		yield return item;
-	//	}
-	//}
 
 	public CharacterAction GetDefaultAction() {
 		foreach(var action in actions) {

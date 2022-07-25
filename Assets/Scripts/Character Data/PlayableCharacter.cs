@@ -15,21 +15,10 @@ public class PlayableCharacter : AbstractCharacter {
 
 	public bool defend = false;
 	public PlayableCharacter(PlayableCharacterData data, ColorScheme scheme=null): base(data, scheme) {
-		//foreach (var action in data.characterClass.startingActions) {
-		//	actions.Add(new CharacterAction(action, this));
-		//}
+
 	}
 
-	public PlayableCharacter(SerializablePlayer player): base(ResourceLoader.GetCharacter(player.data)) {
-		direction = player.direction;
-		actionPointsRemaining = player.actionPointsRemaining;
-		invisiblityDuration = player.invisiblityDuration;
-		isActive = player.isActive;
-		//foreach (var action in player.actions) {
-		//	actions.Add(new CharacterAction(action, this));
-		//}
-		inventory = new Inventory(player.inventory, this);
-	}
+	protected override AbstractCharacterData LoadReference() => ResourceLoader.GetCharacter(referenceID);
 
 	#region turn management
 	public override void StepActions() {

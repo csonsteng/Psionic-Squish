@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Structures;
+
+/// <summary>
+/// Holds references to all mapspaces.
+/// </summary>
 [System.Serializable]
 public class LevelMap
 {
-    [SerializeReference]
-    public List<MapSpace> spaces = new List<MapSpace>();
-    private int rowCount;
-    private int columnCount;
 
-    [SerializeReference]
-    private List<MapSpace> openSpaces = new List<MapSpace>();
+    [SerializeReference] public List<MapSpace> spaces = new List<MapSpace>();
+    [SerializeField] private readonly int rowCount;
+    [SerializeField] private readonly int columnCount;
+    
+    [SerializeReference] private List<MapSpace> openSpaces = new List<MapSpace>();
 
     public LevelMap(int rowCount, int columnCount) {
         spaces.Clear();
@@ -24,7 +27,7 @@ public class LevelMap
         this.rowCount = rowCount;
         this.columnCount = columnCount;
 	}
-
+    /*
     public LevelMap(SerializableMap serializedMap) {
         foreach(var serializedSpace in serializedMap.spaces) {
             var space = new MapSpace(serializedSpace, this);
@@ -49,12 +52,12 @@ public class LevelMap
         serialized.rowCount = rowCount;
         serialized.columnCount = columnCount;
         return serialized;
-	}
+	}*/
 
     public void Clear() {
         foreach (var space in spaces) {
-            if (space.GetTileObject() != null) {
-                GameObject.Destroy(space.GetTileObject());
+            if (space.TileObject != null) {
+                GameObject.Destroy(space.TileObject);
             }
         }
         spaces.Clear();
@@ -135,7 +138,7 @@ public class LevelMap
             return null;
         }
         foreach (var space in spaces) {
-            if (space.GetTileObject() == gameObject) {
+            if (space.TileObject == gameObject) {
                 return space;
 			}
 		}
@@ -150,7 +153,7 @@ public class LevelMap
     public List<MapSpace> GetAdjacentSpaces(MapSpace space) {
 
         List<MapSpace> adjacentSpaces = new List<MapSpace>();
-        if (space.hasObstacle) {
+        if (space.HasObstacle) {
             return adjacentSpaces;
         }
 
@@ -182,7 +185,7 @@ public class LevelMap
 	}
 
     private void TryAddAdjacentSpace(List<MapSpace> spaces, MapSpace space) {
-        if (space.hasObstacle) {
+        if (space.HasObstacle) {
             return;
         }
         spaces.Add(space);
@@ -190,7 +193,7 @@ public class LevelMap
 
     public MapSpace GetSpaceWithStructure(StructureSpace structure) {
         foreach(var space in spaces) {
-            if (space.hasStructure && space.GetStructureSpace() == structure) {
+            if (space.HasStructure && space.Structure == structure) {
                 return space;
 			}
 		}

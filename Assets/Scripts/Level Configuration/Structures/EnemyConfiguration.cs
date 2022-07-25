@@ -8,6 +8,7 @@ namespace Structures {
         public int maxCount=2;
         public int maxRange = 8;
 
+
         public List<EnemyCharacterData> requiredEnemies = new List<EnemyCharacterData>();
         public List<EnemyCharacterData> enemyPool = new List<EnemyCharacterData>();
         [SerializeField]

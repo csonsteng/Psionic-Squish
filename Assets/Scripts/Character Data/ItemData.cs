@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class ItemData : ScriptableObject, IReferenced {
+public class ItemData : ReferenceData
+{
 
 	public string displayName;
 	public bool consumable;
@@ -17,8 +18,4 @@ public class ItemData : ScriptableObject, IReferenced {
 	[Tooltip("Empty list has no restrictions")]
 	public List<CharacterClass> usableBy = new List<CharacterClass>();
 
-	public string uniqueID;
-	public string GetUniqueID() {
-		return uniqueID;
-	}
 }

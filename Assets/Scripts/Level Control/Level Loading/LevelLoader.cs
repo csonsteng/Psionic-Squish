@@ -18,26 +18,28 @@ public class LevelLoader : MonoBehaviour
 	private LevelController Controller => LevelController.Get();
 	private LevelObjectSpawner Spawner => LevelObjectSpawner.Get();
 
-	public static LevelLoader Get() {
+	public static LevelLoader Get() 
+	{
 		LevelLoader loader = (LevelLoader)FindObjectOfType(typeof(LevelLoader));
-		if (loader == null) {
+		if (loader == null) 
 			throw new System.Exception("Level Loader does not exist");
-		}
+
 		return loader;
 	}
 
-	public async UniTask LoadFromSave(SaveData saveData) {
+	public async UniTask LoadFromSave(SaveData saveData) 
+	{
 		Spawner.UnloadLevel();
 		Controller.SetState(LevelController.LevelState.Loading);
 
 		loadingLevel = saveData.level;
 		map = loadingLevel.GetMap();
-		party = new Party(saveData.party, loadingLevel);
+		party = saveData.party;
 		var configuration = loadingLevel.GetConfiguration();
 
-		foreach(var space in loadingLevel.GetStartingSpaces()) {
+		foreach(var space in loadingLevel.GetStartingSpaces())
 			Controller.startingSpaces.Add(space);
-		}
+		
 
 		level = new SerializableLevel();
 		level.SetConfiguration(configuration);
@@ -50,9 +52,9 @@ public class LevelLoader : MonoBehaviour
 		Controller.rewindCount = loadingLevel.rewindCount;
 		Spawner.Initialize(level, configuration, party);
 
-		List<UniTask> tasks = new List<UniTask> {
+		List<UniTask> tasks = new List<UniTask> 
+		{
 			LoadTiles(),
-			LoadObstacles(),
 			LoadStructures(),
 			LoadContainers(),
 			LoadEnemies(),
@@ -65,39 +67,38 @@ public class LevelLoader : MonoBehaviour
 		Spawner.StartGame();
 	}
 
-	private async UniTask LoadTiles() {
+	private async UniTask LoadTiles() 
+	{
 		List<UniTask> tasks = new List<UniTask>();
 		foreach (var space in map.spaces) {
 			var assetReference = new AssetReferenceGameObject(space.tileObjectGUID);
 			tasks.Add(Spawner.GenerateTileForSpace(assetReference, space));
+			if (space.HasObstacle)
+			{
+				tasks.Add(Spawner.SpawnObstacleFromSpace(space));
+			}
 		}
 		await UniTask.WhenAll(tasks);
 	}
 
-	private async UniTask LoadObstacles() {
-		List<UniTask> tasks = new List<UniTask>();
-		foreach (var obstacle in loadingLevel.GetObstacles()) {
-			var assetReference = new AssetReferenceGameObject(obstacle.obstacleGUID);
-			tasks.Add(Spawner.SpawnObstacleInSpace(assetReference, loadingLevel.GetSpace(obstacle.position), obstacle.rotation));
-		}
-		await UniTask.WhenAll(tasks);
-	}
-
-	private async UniTask LoadStructures() {
+	private async UniTask LoadStructures() 
+	{
 		List<UniTask> tasks = new List<UniTask>();
 		foreach (var structure in loadingLevel.GetStructures()) {
-			tasks.Add(LoadStructure(structure, loadingLevel.GetSpace(structure.position)));
+			tasks.Add(LoadStructure(structure));
 			level.AddStructure(structure);
 		}
 		await UniTask.WhenAll(tasks);
 	}
 
-	private async UniTask LoadStructure(SerializableStructure runTimeStructure, MapSpace space) {
-		var structure = new LevelStructure(ResourceLoader.GetStructure(runTimeStructure.structure));
-		var gameObject = await Spawner.SpawnStructureObject(structure.Prefab, space, structure.PrefabOffset, runTimeStructure.rotation);
+	private async UniTask LoadStructure(LevelStructure structure) 
+	{
+		var gameObject = await Spawner.SpawnStructureObject(structure);
 
-		var spaces = structure.GetRotatedSpaces(runTimeStructure.rotation);
-		foreach (var structureSpace in spaces) {
+		var space = structure.rootSpace;
+		var spaces = structure.GetRotatedSpaces(structure.rotation);
+		foreach (var structureSpace in spaces) 
+		{
 			var levelSpace = map.GetSpaceFromCoordinates(space.row + structureSpace.row, space.column + structureSpace.column);
 			if (levelSpace == null) {
 				continue;
@@ -107,47 +108,30 @@ public class LevelLoader : MonoBehaviour
 		}
 	}
 
-	private async UniTask LoadContainers() {
+	private async UniTask LoadContainers() 
+	{
 		List<UniTask> tasks = new List<UniTask>();
-		foreach (var container in loadingLevel.GetContainers()) {
-			var deserialized = new LevelInteractableContainer(container);
-			deserialized.SetPosition(loadingLevel.GetSpace(container.position));
+		foreach (var container in loadingLevel.GetContainers()) 
+		{
 			var assetReference = new AssetReferenceGameObject(container.assetReference);
-			tasks.Add(Spawner.SpawnContainer(deserialized, assetReference));
+			tasks.Add(Spawner.SpawnContainer(container, assetReference));
 		}
 		await UniTask.WhenAll(tasks);
 	}
 
-	private async UniTask LoadObjectives() {
+	private async UniTask LoadEnemies() 
+	{
 		List<UniTask> tasks = new List<UniTask>();
-		foreach (var objective in loadingLevel.GetObjectives()) {
-			var assetReference = new AssetReferenceGameObject(objective.objective);
-			//tasks.Add(Spawner.SpawnContainer(assetReference, loadingLevel.GetSpace(objective.position), objective.rotation));
-		}
-		await UniTask.WhenAll(tasks);
-	}
-
-	private async UniTask LoadEnemies() {
-		List<UniTask> tasks = new List<UniTask>();
-		foreach (var serializedEnemy in loadingLevel.GetEnemies()) {
-			var enemy = new EnemyCharacter(serializedEnemy);
-			enemy.SetPosition(loadingLevel.GetSpace(serializedEnemy.position));
-			if (serializedEnemy.target != null) {
-				enemy.target = loadingLevel.GetSpace(serializedEnemy.target);
-			}
-			foreach (var pathPoint in serializedEnemy.patrolPath) {
-				enemy.patrolPath.Add(loadingLevel.GetSpace(pathPoint));
-			}
+		foreach (var enemy in loadingLevel.GetEnemies()) 
 			tasks.Add(Spawner.SpawnEnemy(enemy));
-		}
 		await UniTask.WhenAll(tasks);
 	}
 
-	private async UniTask LoadPlayers() {
+	private async UniTask LoadPlayers() 
+	{
 		List<UniTask> tasks = new List<UniTask>();
-		foreach (var player in party.members) {
-			tasks.Add(Spawner.SpawnPlayer(player));
-		}
+		foreach (var player in party.members) 
+			tasks.Add(Spawner.SpawnPlayer(player));		
 		await UniTask.WhenAll(tasks);
 	}
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Structures;
@@ -16,11 +16,11 @@ public static class ResourceLoader
 		return references;
 	}
 	
-	public static LevelType GetLevelType(string uniqueID) {
-		return (LevelType)References.levelTypes.Get(uniqueID);
+	public static LevelTypeData GetLevelType(string uniqueID) {
+		return (LevelTypeData)References.levelTypes.Get(uniqueID);
 	}
-	public static LevelEnvironment GetEnvironment(string uniqueID) {
-		return (LevelEnvironment)References.levelEnvironment.Get(uniqueID);
+	public static LevelEnvironmentData GetEnvironment(string uniqueID) {
+		return (LevelEnvironmentData)References.levelEnvironment.Get(uniqueID);
 	}
 	public static CharacterActionData GetAction(string uniqueID) {
 		return (CharacterActionData)References.actions.Get(uniqueID);

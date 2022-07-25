@@ -9,7 +9,10 @@ using TMPro;
 public partial class LevelController : MonoBehaviour
 {
 	public LevelState currentState;
-	public LevelConfiguration defaultConfiguration;
+	public LevelEnvironmentData defaultEnvironment;
+	public LevelTypeData defaultType;
+	public int defaultDifficulty = 3;
+	public float defaultDefenseLevel = 0.3f;
 	public TextMeshProUGUI winText;
 
 	public Material tileHoverMaterial;
@@ -62,8 +65,10 @@ public partial class LevelController : MonoBehaviour
 		Quit
 	}
 
+	public LevelConfiguration DefaultConfiguration => new LevelConfiguration(defaultType, defaultEnvironment, defaultDifficulty, defaultDefenseLevel);
+
 	public async UniTask Play() {
-		await LevelGenerator.Get().Generate(defaultConfiguration);
+		await LevelGenerator.Get().Generate(DefaultConfiguration);
 	}
 
 	public async void GameStarted() {
@@ -239,8 +244,8 @@ public partial class LevelController : MonoBehaviour
 		spawnedObjects.Clear();
 
 		foreach (var enemy in enemies) {
-			if (enemy.GetGameObject() != null) {
-				Destroy(enemy.GetGameObject());
+			if (enemy.GameObject != null) {
+				Destroy(enemy.GameObject);
 			}
 		}
 		enemies.Clear();
@@ -475,16 +480,16 @@ public partial class LevelController : MonoBehaviour
 		if (!step.Passable) {
 			return;
 		}
-		step.ClaimPositionImpassable(movingCharacter.GetGameObject(), movingCharacter.GetLayer());
+		step.ClaimPositionImpassable(movingCharacter.GameObject, movingCharacter.GetLayer());
 		var deltaStep = step.SubtractFrom(movingCharacter.GetPosition());
 		var deltaRow = deltaStep.x;
 		var deltaColumn = deltaStep.y;
-		Vector3 nextLocation = movingCharacter.GetGameObject().transform.position + new Vector3(deltaRow, 0f, deltaColumn);
+		Vector3 nextLocation = movingCharacter.GameObject.transform.position + new Vector3(deltaRow, 0f, deltaColumn);
 		movingCharacter.SetFacing(new Direction(deltaStep));
 
 		var moveSpeed = movingCharacter.SetMoving();
-		Tween tween = movingCharacter.GetGameObject().transform.DOMove(nextLocation, 0.25f);
-		movingCharacter.GetPosition().RelenquishPosition(movingCharacter.GetGameObject());
+		Tween tween = movingCharacter.GameObject.transform.DOMove(nextLocation, 0.25f);
+		movingCharacter.GetPosition().RelenquishPosition(movingCharacter.GameObject);
 		movingCharacter.SetPosition(step);
 		movingCharacter.TakeStep();
 		UpdateVisionIndicators();   //need to rework how this happens so it can do it based off of the destination space during the move
@@ -599,7 +604,7 @@ public partial class LevelController : MonoBehaviour
 
 
 	public void HighAlert(MapSpace space) {
-		float defenseLevel = defaultConfiguration.defendLevel;
+		float defenseLevel = DefaultConfiguration.defendLevel;
 		foreach (var enemy in enemies) {
 			if (enemy.isDead) {
 				continue;

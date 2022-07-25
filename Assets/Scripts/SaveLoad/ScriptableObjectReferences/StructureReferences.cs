@@ -2,7 +2,7 @@
 using Structures;
 
 [CreateAssetMenu(menuName = "References/Structures")]
-public class StructureReferences : GenericScriptableObjectReference<LevelStructureData> { }
+public class StructureReferences : ReferenceObjectList<LevelStructureData> { }
 
 
 

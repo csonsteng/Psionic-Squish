@@ -68,7 +68,7 @@ public class ActionCriteria
 
 		if (requireLineOfSight) {
 			var visionProfile = source.GetVisionProfile();
-			if (!visionProfile.tileHits.ContainsKey(target.GetPosition().GetTileObject())) {
+			if (!visionProfile.tileHits.ContainsKey(target.GetPosition().TileObject)) {
 				return false;
 			}
 		}

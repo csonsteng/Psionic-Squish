@@ -4,14 +4,10 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 
-public abstract class CharacterActionData: ReferencableObject {
-    public override string GetUniqueID() {
-        return uniqueID;
-    }
+public abstract class CharacterActionData: ReferenceData {
     public string displayName;
     [TextArea]
     public string description;
-    public string uniqueID;
     public Type type;
     public int rarity;
     public AssetReferenceSprite sprite;

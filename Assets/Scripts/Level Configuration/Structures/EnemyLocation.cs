@@ -6,7 +6,7 @@ namespace Structures {
     [Serializable]
     public class EnemyLocation  {
         public float spawnChance;
-        public StructureSpace location;
+        [SerializeField] public StructureSpace location;
         public List<EnemyStatus> possibleStatuses = new List<EnemyStatus>();
 
         public EnemyLocation(StructureSpace space) {
