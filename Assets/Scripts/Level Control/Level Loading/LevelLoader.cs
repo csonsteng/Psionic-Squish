@@ -99,10 +99,7 @@ public class LevelLoader : MonoBehaviour
 		var spaces = structure.GetRotatedSpaces(structure.rotation);
 		foreach (var structureSpace in spaces) 
 		{
-			var levelSpace = map.GetSpaceFromCoordinates(space.row + structureSpace.row, space.column + structureSpace.column);
-			if (levelSpace == null) {
-				continue;
-			}
+			var levelSpace = map.GetSpaceFromCoordinates(space.Row + structureSpace.row, space.Column + structureSpace.column);
 			levelSpace.ClaimPositionPassable(gameObject, gameObject.layer);
 			levelSpace.PlaceStructure(structureSpace, gameObject.GetComponent<StructureSceneObject>());
 		}

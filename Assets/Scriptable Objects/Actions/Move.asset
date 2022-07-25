@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc1f85efc5676747b9d8d4dce70d938, type: 3}
   m_Name: Move
   m_EditorClassIdentifier: 
+  uniqueID: move
   displayName: Move
   description: Move a space
-  uniqueID: 
   type: 0
   rarity: 0
   sprite:

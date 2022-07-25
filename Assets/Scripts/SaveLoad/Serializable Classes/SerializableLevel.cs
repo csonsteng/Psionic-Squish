@@ -13,11 +13,11 @@ public class SerializableLevel
 	[SerializeField]
 	private LevelMap map;
 	[SerializeField]
-	private readonly List<EnemyCharacter> enemies = new List<EnemyCharacter>();
+	private List<EnemyCharacter> enemies = new List<EnemyCharacter>();
 	[SerializeField]
-	private readonly List<LevelStructure> structures = new List<LevelStructure>();
+	private List<LevelStructure> structures = new List<LevelStructure>();
 	[SerializeField]
-	private readonly List<LevelInteractableContainer> containers = new List<LevelInteractableContainer>();
+	private List<LevelInteractableContainer> containers = new List<LevelInteractableContainer>();
 	[SerializeField]
 	private List<MapSpace> startingSpaces = new List<MapSpace>();
 

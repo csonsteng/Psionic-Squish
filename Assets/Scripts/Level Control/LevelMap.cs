@@ -27,37 +27,12 @@ public class LevelMap
         this.rowCount = rowCount;
         this.columnCount = columnCount;
 	}
-    /*
-    public LevelMap(SerializableMap serializedMap) {
-        foreach(var serializedSpace in serializedMap.spaces) {
-            var space = new MapSpace(serializedSpace, this);
-            spaces.Add(space);
-			if (serializedSpace.inOpenSpaces) {
-                openSpaces.Add(space);
-			}
-		}
-        rowCount = serializedMap.rowCount;
-        columnCount = serializedMap.columnCount;
-	}
-
-    public SerializableMap Serialize() {
-        var serialized = new SerializableMap();
-        foreach(var space in spaces) {
-            var serializedSpace = space.Serialize();
-            if (openSpaces.Contains(space)) {
-                serializedSpace.inOpenSpaces = true;
-            }
-            serialized.spaces.Add(serializedSpace);
-		}
-        serialized.rowCount = rowCount;
-        serialized.columnCount = columnCount;
-        return serialized;
-	}*/
+    
 
     public void Clear() {
         foreach (var space in spaces) {
             if (space.TileObject != null) {
-                GameObject.Destroy(space.TileObject);
+                space.TileObject.Destroy();
             }
         }
         spaces.Clear();
@@ -111,11 +86,11 @@ public class LevelMap
             return false;
 		}
 
-        if(space.row == 0 || space.row == rowCount - 1) {
+        if(space.Row == 0 || space.Row == rowCount - 1) {
             return true;
 		}
 
-        if(space.column == 0 || space.column == columnCount - 1) {
+        if(space.Column == 0 || space.Column == columnCount - 1) {
             return true;
 		}
 
@@ -124,7 +99,7 @@ public class LevelMap
 
     public MapSpace GetSpaceFromCoordinates(int row, int column) {
         foreach(var space in spaces) {
-            if(space.row == row && space.column == column) {
+            if(space.Row == row && space.Column == column) {
                 return space;
 			}
 		}
@@ -142,7 +117,7 @@ public class LevelMap
                 return space;
 			}
 		}
-        Debug.Log(gameObject.name + " is not a space");
+        Debug.LogWarning($"{gameObject.name} is not a space");
         return null;
 	}
 
@@ -158,25 +133,25 @@ public class LevelMap
         }
 
         if (!space.BlockedOnBottom) {
-            var bottomSpace = GetSpaceFromCoordinates(space.row + 1, space.column);
+            var bottomSpace = GetSpaceFromCoordinates(space.Row + 1, space.Column);
             if (bottomSpace != null && !bottomSpace.BlockedOnTop) {
                 TryAddAdjacentSpace(adjacentSpaces,bottomSpace);
             }
         }
         if (!space.BlockedOnTop) {
-            var topSpace = GetSpaceFromCoordinates(space.row - 1, space.column);
+            var topSpace = GetSpaceFromCoordinates(space.Row - 1, space.Column);
             if(topSpace != null && !topSpace.BlockedOnBottom) {
                 TryAddAdjacentSpace(adjacentSpaces,topSpace);
 			}
         }
         if (!space.BlockedOnRight) {
-            var rightSpace = GetSpaceFromCoordinates(space.row, space.column + 1);
+            var rightSpace = GetSpaceFromCoordinates(space.Row, space.Column + 1);
             if(rightSpace != null && !rightSpace.BlockedOnLeft) {
                 TryAddAdjacentSpace(adjacentSpaces,rightSpace);
 			}
         }
         if (!space.BlockedOnLeft) {
-            var leftSpace = GetSpaceFromCoordinates(space.row, space.column - 1);
+            var leftSpace = GetSpaceFromCoordinates(space.Row, space.Column - 1);
             if(leftSpace != null && !leftSpace.BlockedOnRight) {
                 TryAddAdjacentSpace(adjacentSpaces,leftSpace);
 			}

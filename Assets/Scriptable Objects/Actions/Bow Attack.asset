@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44490bc9e098794f8476d7550923813, type: 3}
   m_Name: Bow Attack
   m_EditorClassIdentifier: 
+  uniqueID: bowAttack
   displayName: Bow
   description: Use once per turn to attack an enemy from afar.
-  uniqueID: BowAttack
   type: 2
   rarity: 10
   sprite:
@@ -24,6 +24,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 1
     range: 50

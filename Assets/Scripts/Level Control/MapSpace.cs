@@ -6,10 +6,13 @@ using Structures;
 using UnityEngine.AddressableAssets;
 
 [System.Serializable]
-public partial class MapSpace : ITargetable
+public partial class MapSpace : ITargetable, ISerializationCallbackReceiver
 {
-    public readonly int row;
-    public readonly int column;
+    public int Row => row;
+    public int Column => column;
+
+    [SerializeField] private int row;
+    [SerializeField] private int column;
 
     public string tileObjectGUID;
 
@@ -19,7 +22,7 @@ public partial class MapSpace : ITargetable
     public bool BlockedOnBottom => HasStructure && Structure.blockedOnBottom;
     public bool HasStructure => Structure != null;
 
-    public bool HasObstacle => obstacle != null;
+    public bool HasObstacle => obstacle != null && obstacle.GUID.IsNotNullOrEmpty();
     public bool hasContainer = false;
     public bool possibleEnemyLocation = false;
     public bool possibleObjectiveLocation = false;
@@ -49,7 +52,8 @@ public partial class MapSpace : ITargetable
         get {
             return passable;
 		}
-		set {
+		set
+        {
             passable = value;
 			if (!passable) {
                 Occupied = true;
@@ -57,10 +61,10 @@ public partial class MapSpace : ITargetable
 		}
 	}
 
-    [SerializeField] private bool occupied = false;
-    [SerializeField] private bool passable = true;
+    private bool occupied = false;
+    private bool passable = true;
     public bool visible = true;
-    [field: NonSerialized] public GameObject TileObject { get; private set; }
+    public GameObject TileObject { get; private set; }
     public UnityEvent tileHovered;
     public Action tileClicked;
 
@@ -76,14 +80,14 @@ public partial class MapSpace : ITargetable
         }
     }
     [SerializeField] private StructureSpace _structure;
-    [NonSerialized]private StructureSceneObject structureObject;
+    private StructureSceneObject structureObject;
     private LevelInteractableContainer container;
     public bool InteriorSpace => HasStructure && Structure.isInterior;
 
     public Material hoverMaterial;
     private Material originalMaterial;
-    [SerializeReference] public readonly LevelMap map;
-    private readonly Dictionary<GameObject, int> occupantsAndLayers = new Dictionary<GameObject, int>();
+    [SerializeReference] public LevelMap map;
+    private Dictionary<GameObject, int> occupantsAndLayers = new Dictionary<GameObject, int>();
     [SerializeField] private bool spotted = false;
     [field: SerializeField] public Threshold Threshold { get; private set; }
 
@@ -95,56 +99,21 @@ public partial class MapSpace : ITargetable
         this.map = map;
         map.ReportOccupancyChange(this);
     }
-    /*
-    public MapSpace(SerializableMapSpace serializedSpace, LevelMap map) {
-        row = serializedSpace.row;
-        column = serializedSpace.column;
-        hasObstacle = serializedSpace.hasObstacle;
-        possibleEnemyLocation = serializedSpace.possibleEnemyLocation;
-        possibleObjectiveLocation = serializedSpace.possibleObjectiveLocation;
-        occupied = serializedSpace.occupied;
-        hasContainer = serializedSpace.hasContainer;
-        visible = serializedSpace.visible;
 
-        tileObjectGUID = serializedSpace.tileObjectGUID;
-        spotted = serializedSpace.spotted;
-        threshold = serializedSpace.threshold;
-        this.map = map;
-
-        
+    public void OnAfterDeserialize()
+    {
+        occupantsAndLayers = new Dictionary<GameObject, int>();
+        passable = true;
+        visible = true;
+        occupied = false;
     }
 
-    public SerializableMapSpace Serialize() {
-        var serialized = new SerializableMapSpace() {
-            row = row,
-            column = column,
-            hasObstacle = hasObstacle,
-            possibleEnemyLocation = possibleEnemyLocation,
-            possibleObjectiveLocation = possibleObjectiveLocation,
-            occupied = occupied,
-            hasContainer = hasContainer,
-            visible = visible,
-            tileObjectGUID = tileObjectGUID,
-            threshold = threshold,
-            spotted = spotted
-        };
-        return serialized;
-	}*/
-    /*
-    public SerializeMapReference Reference() {
-        var serialized = new SerializeMapReference() {
-            row = row,
-            column = column,
-        };
-        return serialized;
-	}
-    */
     public int CurrentHitCount => Indicator.GetCurrentHitCount();
 
 
     public Vector2 SubtractFrom(MapSpace other) {
-        int dRow = row - other.row;
-        int dCol = column - other.column ;
+        int dRow = Row - other.Row;
+        int dCol = Column - other.Column ;
         return new Vector2(dRow, dCol);
 	}
 
@@ -169,7 +138,8 @@ public partial class MapSpace : ITargetable
 	
     public void SetTileObject(GameObject gameobject) => TileObject = gameobject;
 	
-    public bool ClaimPositionImpassable(GameObject gameObject, int layer) {
+    public bool ClaimPositionImpassable(GameObject gameObject, int layer) 
+    {
         if(gameObject == null || !Passable) {
             return false;
 		}
@@ -181,7 +151,8 @@ public partial class MapSpace : ITargetable
         return true;
     }
 
-    public bool ClaimPositionPassable(GameObject gameObject, int layer) {
+    public bool ClaimPositionPassable(GameObject gameObject, int layer)
+    {
         if (gameObject == null || !Passable) {
             return false;
         }
@@ -203,8 +174,14 @@ public partial class MapSpace : ITargetable
 		}
 	}
 
-    public void ShowTileAndOccupants() {
+	public override string ToString()
+	{
+        return $"Mapspace r:{Row} c:{Column}";
+	}
+
+	public void ShowTileAndOccupants() {
         spotted = true;
+
         foreach(KeyValuePair<GameObject, int> pair in occupantsAndLayers) {
             pair.Key.SetLayerRecursive(pair.Value);
 		}
@@ -266,7 +243,7 @@ public partial class MapSpace : ITargetable
     }
 
     public string GetName() {
-        return "(" + row.ToString() + ", " + column.ToString() + ")";
+        return $"({ Row}, {Column})";
     }
 
     public void SetStepIndicator(Direction facing) {
@@ -309,4 +286,8 @@ public partial class MapSpace : ITargetable
     public bool IsAdjacent(MapSpace space) {
         return GetAdjacents().Contains(space) ;
 	}
+
+    public void OnBeforeSerialize() { }
+
+
 }

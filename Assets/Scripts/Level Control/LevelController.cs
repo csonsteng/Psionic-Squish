@@ -209,11 +209,29 @@ public partial class LevelController : MonoBehaviour
 		LevelLoader.Get().LoadFromSave(saveData).Forget();
 	}
 
+	public void Wipe()
+	{ 
+		foreach(var enemy in enemies)
+			enemy.GameObject.Destroy();
+		
+		enemies.Clear();
+		foreach (var container in containers)
+			container.GetGameObject().Destroy();
+
+		containers.Clear();
+
+		map.Clear();
+		map = null;
+		party.Clear();
+		party = null;
+	}
+
 	public async void Rewind() {
 		if(rewindCount <= 0 || turnNumber <= 1) {
 			return;
 		}
 		var oldRewinds = rewindCount;
+		map = null;
 		var saveData = SaveLoadUtility.LoadRewind(turnNumber-1);
 		await LevelLoader.Get().LoadFromSave(saveData);
 		rewindCount = oldRewinds - 1;
@@ -541,7 +559,7 @@ public partial class LevelController : MonoBehaviour
 			}
 			var space = map.GetSpaceFromObject(pair.Key);
 			if(space == null) {
-				Debug.Log("Object in vision profile does not belong to a tile");
+				Debug.LogWarning("Object in vision profile does not belong to a tile");
 				return;
 			}
 			space.ShowTileAndOccupants();

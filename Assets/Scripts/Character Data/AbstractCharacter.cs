@@ -49,6 +49,12 @@ public abstract class AbstractCharacter : ReferenceInstance<AbstractCharacterDat
 		RefreshActionPoints();
 	}
 
+	public override void OnAfterDeserialize()
+	{
+		base.OnAfterDeserialize();
+		triggers = new List<TriggeredEvent>();
+	}
+
 	private Animator GetAnimator() {
 		if(gameObject == null) {
 			return null;

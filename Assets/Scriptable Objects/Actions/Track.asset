@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b966981b9ef2c04db51302da6ae920e, type: 3}
   m_Name: Track
   m_EditorClassIdentifier: 
+  uniqueID: track
   displayName: Track
   description: Track an enemy to figure out their status.
-  uniqueID: Track
   type: 0
   rarity: 0
   sprite:
@@ -24,6 +24,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 0
+  defaultAction: 0
   actionCriteria:
     targets: 1
     range: 99

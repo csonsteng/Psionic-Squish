@@ -78,7 +78,7 @@ public class LevelGenerator : MonoBehaviour
 			tasks.Add(Spawner.GenerateTileForSpace(configuration.GetTile(), space));
 
 			if (map.SpaceOnEdge(space)) {
-				Vector2Int positionVector = new Vector2Int(space.row, space.column);
+				Vector2Int positionVector = new Vector2Int(space.Row, space.Column);
 				if (!startingSpots.Contains(positionVector)) {
 					tasks.Add(SpawnObstacleInSpace(space));
 				}
@@ -190,7 +190,7 @@ public class LevelGenerator : MonoBehaviour
 
 		var spaces = structure.GetRotatedSpaces(rotation);
 		foreach (var space in spaces) {
-			var levelSpace = map.GetSpaceFromCoordinates(structureSpace.row + space.row, structureSpace.column + space.column);
+			var levelSpace = map.GetSpaceFromCoordinates(structureSpace.Row + space.row, structureSpace.Column + space.column);
 			if (levelSpace == null) {
 				continue;
 			}

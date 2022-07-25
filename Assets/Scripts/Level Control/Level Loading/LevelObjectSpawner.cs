@@ -17,8 +17,13 @@ public class LevelObjectSpawner : MonoBehaviour {
 
 
 	LevelController Controller => LevelController.Get();
+	private static LevelObjectSpawner spawner;
 	public static LevelObjectSpawner Get() {
-		LevelObjectSpawner spawner = (LevelObjectSpawner)FindObjectOfType(typeof(LevelObjectSpawner));
+		if(spawner != null)
+		{
+			return spawner;
+		}
+		spawner = FindObjectOfType<LevelObjectSpawner>();
 		if (spawner == null) {
 			throw new System.Exception("Level Spawner does not exist");
 		}
@@ -60,8 +65,8 @@ public class LevelObjectSpawner : MonoBehaviour {
 
 		space.tileObjectGUID = gameObject.AssetGUID;
 		GameObject tileObject = await Addressables.InstantiateAsync(gameObject, this.transform);
-		tileObject.transform.Translate(space.row, 0f, space.column);
-		tileObject.name = "Tile " + space.GetName();
+		tileObject.transform.Translate(space.Row, 0f, space.Column);
+		tileObject.name = space.ToString();
 		BoxCollider lineOfSightCollider = tileObject.AddComponent<BoxCollider>();
 		lineOfSightCollider.size = new Vector3(1f, 2f, 1f);
 		lineOfSightCollider.center = new Vector3(0f, 1f, 0f);
@@ -78,7 +83,6 @@ public class LevelObjectSpawner : MonoBehaviour {
 	{
 		var obstacle = space.obstacle;
 		var gameObject = new AssetReferenceGameObject(obstacle.GUID);
-
 		return await SpawnObstacle(gameObject, space, obstacle.rotation);
 	}
 
@@ -113,7 +117,7 @@ public class LevelObjectSpawner : MonoBehaviour {
 
 	public async UniTask<GameObject> SpawnStructureObject(AssetReferenceGameObject gameObject, MapSpace space, Vector3 offset, float rotation) {
 		GameObject spawnedObject = await Addressables.InstantiateAsync(gameObject, this.transform);
-		spawnedObject.transform.Translate(space.row + offset.x, 0f, space.column + offset.z);
+		spawnedObject.transform.Translate(space.Row + offset.x, 0f, space.Column + offset.z);
 		spawnedObject.transform.Rotate(new Vector3(0f, -rotation, 0f));
 		spawnedObjects.Add(spawnedObject);
 		return spawnedObject;
@@ -122,7 +126,7 @@ public class LevelObjectSpawner : MonoBehaviour {
 	private async UniTask<GameObject> SpawnObjectInSpace(AssetReferenceGameObject gameObject, MapSpace space, bool passable) {
 
 		GameObject spawnedObject = await Addressables.InstantiateAsync(gameObject, this.transform);
-		spawnedObject.transform.Translate(space.row, 0f, space.column);
+		spawnedObject.transform.Translate(space.Row, 0f, space.Column);
 		spawnedObjects.Add(spawnedObject);
 		if (passable) {
 			space.ClaimPositionPassable(spawnedObject, spawnedObject.layer);
@@ -145,7 +149,7 @@ public class LevelObjectSpawner : MonoBehaviour {
 		GameObject enemyObject = await Addressables.InstantiateAsync(enemy.Data.prefab, this.transform);
 
 		enemySpot.ClaimPositionPassable(enemyObject, enemy.GetLayer());
-		enemyObject.transform.Translate(enemySpot.row, 0f, enemySpot.column);
+		enemyObject.transform.Translate(enemySpot.Row, 0f, enemySpot.Column);
 		enemyObject.name = enemy.GetName();
 		enemy.SetGameObject(enemyObject);
 		enemies.Add(enemy);
@@ -159,7 +163,7 @@ public class LevelObjectSpawner : MonoBehaviour {
 	public async UniTask SpawnPlayer(PlayableCharacter player) {
 
 		GameObject playerObject = await Addressables.InstantiateAsync(player.Data.prefab, this.transform);
-		playerObject.transform.Translate(player.GetPosition().row, 0f, player.GetPosition().column);
+		playerObject.transform.Translate(player.GetPosition().Row, 0f, player.GetPosition().Column);
 		playerObject.name = player.GetName();
 		playerObject.layer = player.GetLayer();
 		foreach (Transform t in playerObject.transform) {

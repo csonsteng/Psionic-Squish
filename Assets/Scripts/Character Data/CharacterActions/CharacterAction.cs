@@ -9,6 +9,9 @@ public class CharacterAction: ReferenceInstance<CharacterActionData> {
 
 	protected override CharacterActionData LoadReference() => ResourceLoader.GetAction(referenceID);
 	[field: SerializeReference] public AbstractCharacter Owner { get; }
+	[field: SerializeField] public int PointsCost {get; private set;}
+	[SerializeField] private int turnsSinceUse = 999;
+
 	public string DisplayName => Data.displayName;
 	public string Description => Data.description;
 
@@ -19,8 +22,6 @@ public class CharacterAction: ReferenceInstance<CharacterActionData> {
 
 	public bool IsActive { get; set; }
 	public ITargetable Target { get; set; }
-	[field: SerializeField] public int PointsCost {get; private set;}
-	[SerializeField] private int turnsSinceUse = 999;
 
 	public CharacterAction(CharacterActionData characterActionData, AbstractCharacter owner): base(characterActionData) 
 	{
@@ -34,6 +35,11 @@ public class CharacterAction: ReferenceInstance<CharacterActionData> {
 		PointsCost = Data.pointsCost;
 	}
 
+	public override void OnAfterDeserialize()
+	{
+		base.OnAfterDeserialize();
+		AddPassiveTriggers();
+	}
 
 	public void SetPending() {
 		Owner.SetPendingAction(PointsCost);

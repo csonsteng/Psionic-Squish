@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12153956ebfff584ea32e5bfd9a81bc3, type: 3}
   m_Name: Defend
   m_EditorClassIdentifier: 
+  uniqueID: defend
   displayName: Shield
   description: Embrace a single enemy attack on the next turn without dying.
-  uniqueID: Defend
   type: 2
   rarity: 0
   sprite:
@@ -25,6 +25,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 2
+  defaultAction: 0
   actionCriteria:
     targets: 4
     range: 0

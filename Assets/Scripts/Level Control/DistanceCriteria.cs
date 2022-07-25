@@ -67,7 +67,7 @@ public class DistanceCriteria
         var map = otherSpace.map;
         for (var i = 0; i <= distance; i++) {
             for (var j = 0; j <= distance; j++) {
-                var space = map.GetSpaceFromCoordinates(otherSpace.row + i, otherSpace.column + i);
+                var space = map.GetSpaceFromCoordinates(otherSpace.Row + i, otherSpace.Column + i);
                 if (space == null) {
                     return false;
                 }
@@ -81,7 +81,7 @@ public class DistanceCriteria
         var map = otherSpace.map;
         for(var i=0; i<=distance; i++) {
             for(var j=0; j<=distance; j++) {
-                var space = map.GetSpaceFromCoordinates(otherSpace.row + i, otherSpace.column + i);
+                var space = map.GetSpaceFromCoordinates(otherSpace.Row + i, otherSpace.Column + i);
                 if(space != null && space.HasStructure) {
                     return false;
 				}
@@ -92,8 +92,8 @@ public class DistanceCriteria
 	}
 
     public bool CheckStraightLineToSpace(MapSpace otherSpace) {
-        var rowDelta = space.row - otherSpace.row;
-        var columnDelta = space.column - otherSpace.column;
+        var rowDelta = space.Row - otherSpace.Row;
+        var columnDelta = space.Column - otherSpace.Column;
         float delta = Mathf.Sqrt(rowDelta * rowDelta + columnDelta * columnDelta);
         switch (comparison) {
             case Comparison.LessThan:
@@ -126,8 +126,8 @@ public class DistanceCriteria
     }
 
     public bool CheckSteps(MapSpace otherSpace) {
-        var rowDelta = space.row - otherSpace.row;
-        var columnDelta = space.column - otherSpace.column;
+        var rowDelta = space.Row - otherSpace.Row;
+        var columnDelta = space.Column - otherSpace.Column;
         float delta = Math.Abs(rowDelta) + Math.Abs(columnDelta);
         switch (comparison) {
             case Comparison.LessThan:

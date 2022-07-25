@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 676c0101c4a15cc40bd4e1efe7c9dddb, type: 3}
   m_Name: Scout
   m_EditorClassIdentifier: 
+  uniqueID: scout
   displayName: Scout
   description: Peek around to get a better view of things
-  uniqueID: Scout
   type: 0
   rarity: 0
   sprite:
@@ -25,6 +25,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 0
+  defaultAction: 0
   actionCriteria:
     targets: 4
     range: 0

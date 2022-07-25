@@ -129,8 +129,8 @@ public static class Pathfinding
         if(goalNode == null || hNode == null) {
             throw new System.Exception("Cannot pathfind with a null node");
 		}
-        int deltaR = goalNode.space.row - hNode.space.row;
-        int deltaC = goalNode.space.column - hNode.space.column;
+        int deltaR = goalNode.space.Row - hNode.space.Row;
+        int deltaC = goalNode.space.Column - hNode.space.Column;
         float h = Mathf.Sqrt((Mathf.Pow((float)deltaR, 2f) + Mathf.Pow((float)deltaC, 2f)));
         hNode.h = h;
 	}

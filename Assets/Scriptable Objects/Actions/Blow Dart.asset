@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff56d4cb3dd76444bed9cbd3decdc12, type: 3}
   m_Name: Blow Dart
   m_EditorClassIdentifier: 
+  uniqueID: blowDart
   displayName: Blow Dart
   description: Puts the enemy to sleep
-  uniqueID: Blow Dart
   type: 2
   rarity: 0
   sprite:
@@ -24,6 +24,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 1
     range: 10

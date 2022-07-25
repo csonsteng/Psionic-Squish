@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 595d7e3f380b274489e6256d29a46160, type: 3}
   m_Name: Lay Trap
   m_EditorClassIdentifier: 
+  uniqueID: layTrap
   displayName: Trap
   description: Lay a trap. Be careful!
-  uniqueID: Lay Trap
   type: 2
   rarity: 20
   sprite:
@@ -24,6 +24,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 3
     range: 1

@@ -12,7 +12,7 @@ public class ReferenceObjectList<T>: ScriptableObject where T: ReferenceData
 				return item;
 			}
 		}
-		Debug.Log("returning null items");
+		Debug.Log($"Could not find {uniqueID}");
 		return null;
 	}
 }

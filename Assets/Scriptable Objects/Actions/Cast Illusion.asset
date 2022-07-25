@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1be8577de1c20e7459cc4cf1042cc639, type: 3}
   m_Name: Cast Illusion
   m_EditorClassIdentifier: 
+  uniqueID: castIllusion
   displayName: Cast Illusion
   description: Cast an illusion in an area enemies can see and it will draw them
     to it
-  uniqueID: CastIllusion
   type: 1
   rarity: 0
   sprite:
@@ -26,6 +26,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 3
     range: 999

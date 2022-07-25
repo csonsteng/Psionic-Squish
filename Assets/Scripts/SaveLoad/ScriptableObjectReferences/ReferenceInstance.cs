@@ -17,7 +17,7 @@ public abstract class ReferenceInstance<T> : ISerializationCallbackReceiver
 		data = baseObject;
 	}
 
-	public void OnAfterDeserialize()
+	public virtual void OnAfterDeserialize()
 	{
 		if(referenceID.IsNotNullOrEmpty())
 			data = LoadReference();

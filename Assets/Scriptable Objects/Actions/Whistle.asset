@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1be8577de1c20e7459cc4cf1042cc639, type: 3}
   m_Name: Whistle
   m_EditorClassIdentifier: 
+  uniqueID: whistle
   displayName: Whistle
   description: Alert enemies within a 15 tile radius
-  uniqueID: 
   type: 2
   rarity: 30
   sprite:
@@ -24,6 +24,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 4
     range: 0

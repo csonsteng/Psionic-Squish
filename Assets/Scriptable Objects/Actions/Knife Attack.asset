@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44490bc9e098794f8476d7550923813, type: 3}
   m_Name: Knife Attack
   m_EditorClassIdentifier: 
+  uniqueID: knifeAttack
   displayName: Knife
   description: Use once per turn to attack a single enemy up close
-  uniqueID: KnifeAttack
   type: 2
   rarity: 20
   sprite:
@@ -25,6 +25,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 1
     range: 1

@@ -10,11 +10,11 @@ public class LevelConfiguration: ISerializationCallbackReceiver
     public float defendLevel;
 
 
-    [NonSerialized] public LevelTypeData type;
-    [NonSerialized] public LevelEnvironmentData environment;
+    public LevelTypeData type;
+    public LevelEnvironmentData environment;
 
-    private string typeID;
-    private string environmentID;
+    [SerializeField] private string typeID;
+    [SerializeField] private string environmentID;
 
     public LevelConfiguration(LevelTypeData type, LevelEnvironmentData environment, int difficulty, float defendLevel)
 	{

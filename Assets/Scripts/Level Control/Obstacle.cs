@@ -5,8 +5,8 @@ using UnityEngine.AddressableAssets;
 [Serializable]
 public class Obstacle
 {
-    [SerializeField] public readonly string GUID = string.Empty;
-    [SerializeField] public readonly float rotation;
+    public string GUID = string.Empty;
+    public float rotation;
 
     public Obstacle(AssetReferenceGameObject obstacle, float rotation)
 	{

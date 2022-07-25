@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44490bc9e098794f8476d7550923813, type: 3}
   m_Name: Magic Missile
   m_EditorClassIdentifier: 
+  uniqueID: magicMissile
   displayName: Magic Missile
   description: Use once per turn to attack a single enemy from afar
-  uniqueID: MagicMissile
   type: 1
   rarity: 0
   sprite:
@@ -25,6 +25,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 1
     range: 99

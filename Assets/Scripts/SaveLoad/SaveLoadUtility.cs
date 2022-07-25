@@ -14,11 +14,13 @@ public class SaveLoadUtility
 		string path = Application.persistentDataPath + "/" + fileName + ".save";
 
 
-		var stream = new FileStream(path, FileMode.Create);
-
 		var json = JsonUtility.ToJson(saveData);
+
+		File.WriteAllText(path, json);
+		/*
+		var stream = new FileStream(path, FileMode.Create);
 		Formatter.Serialize(stream, json);
-		stream.Close();
+		stream.Close();*/
 	}
 
 	public static SaveData GetSaveData(string fileName) {
@@ -28,9 +30,9 @@ public class SaveLoadUtility
 			return null;
 		}
 
-		FileStream stream = new FileStream(path, FileMode.Open);
-		var data = Formatter.Deserialize(stream) as string;
-		stream.Close();
+		//FileStream stream = new FileStream(path, FileMode.Open);
+		var data = File.ReadAllText(path);// Formatter.Deserialize(stream) as string;
+		//stream.Close();
 		return JsonUtility.FromJson<SaveData>(data);
 	}
 

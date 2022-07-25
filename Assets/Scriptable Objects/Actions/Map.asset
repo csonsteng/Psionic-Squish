@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9959a7d10416835499babd4b9cf6db33, type: 3}
   m_Name: Map
   m_EditorClassIdentifier: 
+  uniqueID: map
   displayName: Map
   description: This is the objective!
-  uniqueID: 
   type: 2
   rarity: 0
   sprite:
@@ -25,6 +25,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 0
     range: 0

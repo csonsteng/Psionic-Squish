@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e06f0d59ea2864ca1489373183829b, type: 3}
   m_Name: Invisibility
   m_EditorClassIdentifier: 
+  uniqueID: invisibility
   displayName: Invisibility
   description: Become undetectable to enemies for one round
-  uniqueID: Invisibility
   type: 1
   rarity: 0
   sprite:
@@ -24,6 +24,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 2
+  defaultAction: 0
   actionCriteria:
     targets: 4
     range: 0

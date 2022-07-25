@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e06f0d59ea2864ca1489373183829b, type: 3}
   m_Name: Hide
   m_EditorClassIdentifier: 
+  uniqueID: hide
   displayName: Hide
   description: When not seen take the time to find a good hiding spot. (Invisible
     for the enemies next turn)
-  uniqueID: Hide
   type: 0
   rarity: 0
   sprite:
@@ -26,6 +26,7 @@ MonoBehaviour:
   passiveTrigger: 0
   pointsCost: 1
   cooldown: 1
+  defaultAction: 0
   actionCriteria:
     targets: 4
     range: 0
