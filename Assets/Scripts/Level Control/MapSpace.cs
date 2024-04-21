@@ -253,6 +253,10 @@ public class MapSpace : ITargetable
 	}
 
     private bool IsActivePlayerLocation() {
+        if(LevelController.Get().ActivePlayer == null)
+        {
+            return false;
+        }
         return LevelController.Get().ActivePlayer.GetPosition() == this;
 	}
 

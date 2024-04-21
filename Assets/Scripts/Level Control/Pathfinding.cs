@@ -5,6 +5,7 @@ using UnityEngine;
 public static class Pathfinding 
 {
 
+    // why is this not hashed???
     private static List<Node> nodeMap = new List<Node>();
     
     public class Node {

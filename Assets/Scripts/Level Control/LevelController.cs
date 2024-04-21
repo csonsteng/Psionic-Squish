@@ -107,13 +107,13 @@ public partial class LevelController : MonoBehaviour
 		soundObject.transform.parent = this.transform;
 	}
 
-
+	private static LevelController _instance;
 	public static LevelController Get() {
-		LevelController controller = (LevelController)FindObjectOfType(typeof(LevelController));
-		if(controller == null) {
-			throw new System.Exception("Level Controller does not exist");
+		if(_instance == null)
+		{
+			_instance = (LevelController)FindObjectOfType(typeof(LevelController));
 		}
-		return controller;
+		return _instance;
 	}
 
 	public LevelMap GetMap() {
